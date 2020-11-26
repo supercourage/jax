@@ -109,7 +109,7 @@ ignore_jit_of_pmap_warning = partial(
 ignore_slow_all_to_all_warning = partial(
   jtu.ignore_warning, message="all_to_all.*expect significant slowdowns.*")
 
-ignore_xmap_warning = functools.partial(
+ignore_xmap_warning = partial(
   jtu.ignore_warning, message=".*is an experimental.*")
 
 class PmapTest(jtu.JaxTestCase):
