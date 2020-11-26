@@ -1111,7 +1111,8 @@ class BatchingTest(jtu.JaxTestCase):
       vmap(lambda x: x - lax.axis_index('i'), axis_name='i')(x),
       x - np.arange(x.shape[0]))
 
-
+  @skipIf(not jax.config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testCollectivePdot(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')
@@ -1128,6 +1129,8 @@ class BatchingTest(jtu.JaxTestCase):
     z = vmap(f, axis_name='i', in_axes=(0, 0), out_axes=None)(x, y)
     self.assertAllClose(z, jnp.dot(x.T, y))
 
+  @skipIf(not jax.config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testCollectivePdotBatching(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')
@@ -1138,6 +1141,8 @@ class BatchingTest(jtu.JaxTestCase):
     zs = vmap(vmap(f, axis_name='i', in_axes=(1, 0), out_axes=None))(xs, ys)
     self.assertAllClose(zs, jnp.einsum('nij,njk->nik', xs, ys))
 
+  @skipIf(not jax.config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testPdotJvp(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')

@@ -256,6 +256,9 @@ class GmapTest(jtu.JaxTestCase):
     python_should_be_executing = False
     fm(x)
 
+  @ignore_gmap_warning()
+  @skipIf(not config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testPdotBasic(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')
@@ -272,6 +275,9 @@ class GmapTest(jtu.JaxTestCase):
 
     self.assertAllClose(z, jnp.dot(x, y))
 
+  @ignore_gmap_warning()
+  @skipIf(not config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testPdotBatching(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')
