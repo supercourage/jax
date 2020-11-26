@@ -1577,6 +1577,8 @@ class PmapTest(jtu.JaxTestCase):
     mapped_fn(indices)  # doesn't crash
 
   @ignore_xmap_warning()
+  @skipIf(not jax.config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testPdotBasic(self):
     num_devices = jax.device_count()
 

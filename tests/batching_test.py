@@ -1158,6 +1158,8 @@ class BatchingTest(jtu.JaxTestCase):
     self.assertAllClose(z, jnp.dot(x, y))
     self.assertAllClose(z_dot, jnp.dot(x_dot, y) + jnp.dot(x, y_dot))
 
+  @skipIf(not jax.config.omnistaging_enabled,
+          "vmap collectives only supported when omnistaging is enabled")
   def testPdotVjp(self):
     def f(x, y):
       return lax.pdot(x, y, 'i')
